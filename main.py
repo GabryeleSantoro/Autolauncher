@@ -2,10 +2,7 @@ from tkinter import *
 from functions import *
 from languages import *
 from tkinter import messagebox
-
-root = Tk()
-root.title("Autorun Launcher")
-root.geometry( "500x300" )
+import re
 
 language,label,button,clicked,globalDisks = None,None,None,None,None
 
@@ -13,11 +10,8 @@ defineLanguage()
 
 #Language
 languages = [
-   "it_IT",
-   "en_US"
+   "it_IT"
 ]
-
-printDisks()
 
 def refresh(self):
     self.destroy()
@@ -29,14 +23,44 @@ def optionChanged(*args):
     button.config(text = getText(1))
 
 def searchAutorun(path):
-    print(path)
-    temp = (find_files("autorun.inf",path))
+    temp = (find_file(path,re.compile("AUTORUN")))
     if len(temp) > 0:
-        messagebox.showinfo(getText(3),getText(3))
+        f = open(temp[0], "r")
+        contents = f.readlines()
+        for content in contents:
+            if content.find("open") != -1:
+                index = content.find("open")
+                index = index + 5
+                os.system(path+content[index:])
+                break
     else:
-        messagebox.showerror(getText(4), getText(5))
+        temp = (find_file(path,re.compile("autorun")))
+        if len(temp) == 0:
+            messagebox.showerror(getText(4), getText(5))
+        else:
+            f = open(temp[0], "r")
+            contents = f.readlines()
+            for content in contents:
+                if content.find("open") != -1:
+                    index = content.find("open")
+                    index = index + 5
+                    os.system(path+content[index:])
+                    break
 
 def generateUI():
+
+    #Disks
+    disks = getDisks()
+
+    if len(disks) == 0:
+        messagebox.showerror(getText(6), getText(7))
+        return
+
+    options = []
+
+    root = Tk()
+    root.title("Autorun Launcher")
+    root.geometry( "500x300" )
 
     global language
     language = StringVar()
@@ -49,14 +73,10 @@ def generateUI():
     label = Label(root, text = getText(0), font=('Helvetica 15 bold'))
 
     global labelDisks
-    labelDisks = Label(root,text = getText(1), font=('Helvetica 10 italic'))
-    #Disks
-    disks = getDisks()
-
-    options = []
+    labelDisks = Label(root , text = getText(1), font=('Helvetica 10 italic'))
 
     for disk in disks:
-        options.append(disk.device)
+        options.append(disk)
 
     global clicked
     clicked = StringVar()
@@ -78,8 +98,6 @@ def generateUI():
     drop.place(x = 300, y = 145)
 
     button.place(x = 200, y = 220)
-
-    
 
     root.mainloop()
 

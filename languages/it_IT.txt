@@ -4,3 +4,5 @@ Cerca un autorun
 File trovati!
 Nessun file trovato!
 File non trovato
+Nessun disco trovato!
+Inserisci un disco per continuare
