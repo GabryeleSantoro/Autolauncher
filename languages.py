@@ -1,10 +1,13 @@
 import locale
+import ctypes
 
 language = "en_US"
 
 def defineLanguage():
-    setLanguage(locale.getlocale()[0])
-    return locale.getlocale()
+    windll = ctypes.windll.kernel32
+    windll.GetUserDefaultUILanguage()
+    global language
+    language = locale.windows_locale[ windll.GetUserDefaultUILanguage() ]
 
 def getLanguage():
     return language

@@ -1,4 +1,5 @@
 Benvenuto in Autorun Launcher
+Seleziona un disco:
 Cerca un autorun
 File trovati!
 Nessun file trovato!

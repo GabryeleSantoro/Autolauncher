@@ -1,4 +1,5 @@
 Welcome to Autorun Launcher
+Select a disk:
 Search for Autorun
 Found files!
 No file Found!

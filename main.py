@@ -1,20 +1,23 @@
 from tkinter import *
 from functions import *
 from languages import *
+from tkinter import messagebox
 
 root = Tk()
 root.title("Autorun Launcher")
-root.geometry( "500x200" )
+root.geometry( "500x300" )
 
-language,label,button,clicked = None,None,None,None
+language,label,button,clicked,globalDisks = None,None,None,None,None
 
-setLanguage(defineLanguage()[0])
+defineLanguage()
 
 #Language
 languages = [
    "it_IT",
    "en_US"
 ]
+
+printDisks()
 
 def refresh(self):
     self.destroy()
@@ -29,9 +32,9 @@ def searchAutorun(path):
     print(path)
     temp = (find_files("autorun.inf",path))
     if len(temp) > 0:
-        messagebox.showinfo(getText(2),getText(2))
+        messagebox.showinfo(getText(3),getText(3))
     else:
-        messagebox.showerror(getText(3), getText(4))
+        messagebox.showerror(getText(4), getText(5))
 
 def generateUI():
 
@@ -45,6 +48,8 @@ def generateUI():
     global label
     label = Label(root, text = getText(0), font=('Helvetica 15 bold'))
 
+    global labelDisks
+    labelDisks = Label(root,text = getText(1), font=('Helvetica 10 italic'))
     #Disks
     disks = getDisks()
 
@@ -61,16 +66,20 @@ def generateUI():
     
     #Search Button
     global button
-    button = Button( root , text = getText(1) , command = lambda : searchAutorun(clicked.get()) )
+    button = Button( root , text = getText(2) , command = lambda : searchAutorun(clicked.get()) )
 
     #Layout
     root.grid_columnconfigure(0, weight=1)
 
-    label.grid(row = 1, column = 0, padx = 10, pady = 10, sticky="ew")
-    drop2.grid(row = 0, column = 0, padx = 10, pady = 10, sticky="e")
+    drop2.place(x = 400, y = 20)
+    label.place(x = 100, y = 75)
 
-    drop.grid(row = 2, column = 0, padx = 10, pady = 10)
-    button.grid(row = 3, column = 0, padx = 10, pady = 10)
+    labelDisks.place(x = 150, y = 150)
+    drop.place(x = 300, y = 145)
+
+    button.place(x = 200, y = 220)
+
+    
 
     root.mainloop()
 
